@@ -1,2 +1,6 @@
 numpy
-cupy-cuda11x
+cupy-cuda12x 
+tqdm
+psutil
+py-cpuinfo
+gputil
