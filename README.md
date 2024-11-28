@@ -4,6 +4,27 @@
 
 A comprehensive benchmarking suite comparing CUDA, OpenMP, and CuPy implementations of common parallel computing algorithms.
 
+## Benchmark Visualizations
+
+### Framework Performance Comparison
+![Framework Performance](img/img1.png)
+*Comparison of execution times across different frameworks and algorithms*
+
+### Scaling Analysis
+![Scaling Analysis](img/img2.png)
+*How execution time scales with problem size for each implementation*
+
+### Performance Variability
+![Performance Variability](img/img3.png)
+*Standard deviation of execution times showing stability of each framework*
+
+### Speedup Analysis
+![Speedup Analysis](img/img4.png)
+*Relative speedup compared to OpenMP baseline implementation*
+
+### Parallelization Efficiency
+![Efficiency Analysis](img/img5.png)
+
 ## Algorithms Implemented
 - Monte Carlo Pi Estimation
 - Matrix Multiplication
@@ -76,6 +97,8 @@ python3 benchmark/benchmark.py
    - Best performance: CUDA (~0.112s)
    - OpenMP: ~1.33s
    - CuPy: ~6.51s
+
+*Efficiency ratio (time/problem size) across different implementations*
 
 ## Performance Analysis
 - CUDA consistently outperforms in compute-intensive tasks
