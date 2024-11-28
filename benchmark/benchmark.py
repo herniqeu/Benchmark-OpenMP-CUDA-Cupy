@@ -38,7 +38,29 @@ class Benchmark:
         self.cupy_mandelbrot = mandelbrot
         
     def get_system_info(self):
-        # ... (mantém o mesmo código) ...
+        gpu = GPUtil.getGPUs()[0]
+        return {
+            "cpu": {
+                "model": cpuinfo.get_cpu_info()['brand_raw'],
+                "cores": psutil.cpu_count(logical=False),
+                "threads": psutil.cpu_count(logical=True),
+                "frequency": psutil.cpu_freq().max,
+                "memory_total": psutil.virtual_memory().total / (1024**3),
+                "memory_available": psutil.virtual_memory().available / (1024**3)
+            },
+            "gpu": {
+                "name": gpu.name,
+                "memory_total": gpu.memoryTotal,
+                "memory_free": gpu.memoryFree,
+                "temperature": gpu.temperature,
+                "uuid": gpu.uuid
+            },
+            "system": {
+                "os": platform.system(),
+                "os_version": platform.version(),
+                "python_version": platform.python_version()
+            }
+        }
 
     def run_monte_carlo(self, points, results):
         gpu = GPUtil.getGPUs()[0]
