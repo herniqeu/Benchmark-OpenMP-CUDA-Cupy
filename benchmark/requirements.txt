@@ -1,1 +1,2 @@
-nvcc -O3 -shared -Xcompiler -fPIC monte_carlo.cu -o libmonte_carlo.so
+numpy
+cupy-cuda11x

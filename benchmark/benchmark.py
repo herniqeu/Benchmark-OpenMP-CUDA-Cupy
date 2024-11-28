@@ -3,25 +3,32 @@ import time
 import ctypes
 import numpy as np
 from pathlib import Path
+import sys
+from tqdm import tqdm
+
+# Adiciona o diretório 'cupy' ao path do Python
+sys.path.append('./cupy')
 
 class Benchmark:
     def __init__(self):
         self.cuda_lib = ctypes.CDLL('./cuda/libmonte_carlo.so')
         self.openmp_lib = ctypes.CDLL('./openmp/libmonte_carlo.so')
-        from cupy.monte_carlo import monte_carlo_pi as cupy_monte_carlo
-        self.cupy_monte_carlo = cupy_monte_carlo
+        from monte_carlo import monte_carlo_pi
+        self.cupy_monte_carlo = monte_carlo_pi
         
     def run_benchmark(self, points_list, iterations=5):
         results = {}
         
-        for points in points_list:
+        # Barra de progresso principal para diferentes tamanhos de pontos
+        for points in tqdm(points_list, desc="Processing different point sizes"):
             results[points] = {
                 'cuda': [],
                 'openmp': [],
                 'cupy': []
             }
             
-            for _ in range(iterations):
+            # Barra de progresso para as iterações
+            for _ in tqdm(range(iterations), desc=f"Running iterations for {points} points", leave=False):
                 # CUDA
                 start = time.perf_counter()
                 self.cuda_lib.monte_carlo_pi(points)
@@ -42,9 +49,19 @@ class Benchmark:
     def save_results(self, results, filename='benchmark_results.json'):
         with open(filename, 'w') as f:
             json.dump(results, f, indent=4)
+        print(f"\nResults saved to {filename}")
 
 if __name__ == '__main__':
-    points_list = [1000, 10000, 100000, 1000000]
+    points_list = [
+    10,           # 10 pontos
+    100,          # 100 pontos
+    1_000,        # mil
+    10_000,       # 10 mil
+    100_000,      # 100 mil
+    1_000_000,    # 1 milhão
+    10_000_000,   # 10 milhões
+    ]
+    print("Starting benchmark...")
     benchmark = Benchmark()
     results = benchmark.run_benchmark(points_list)
     benchmark.save_results(results)
